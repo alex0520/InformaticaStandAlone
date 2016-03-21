@@ -1,5 +1,11 @@
+var fs = require('fs');
 var express = require('express');
 var app = express();
+
+var configuration = JSON.parse(
+    fs.readFileSync('config.json')
+);
+
 
 app.post('/hw.v1.entrega', function (req, res) {
     res.header("Content-Type", "application/json");
@@ -18,11 +24,11 @@ app.get('/hw.v1.entrega', function (req, res) {
 });
 
 
-var server = app.listen(8080, function () {
+var server = app.listen(configuration.puerto, function () {
 
     var host = server.address().address;
     var port = server.address().port;
 
-    console.log("Escuchando por http://%s:%s", host, port);
+    console.log("[%s] Escuchando por http://%s:%s", configuration.ambiente, host, port);
 
 });
