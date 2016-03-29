@@ -26,9 +26,13 @@ gpio.on('change', function(channel, value) {
 
 
 function iniciarMotor(){
-    console.log('Inicia el motor');
-    gpio.write(8, 5000);
-    gpio.write(10, 0);
+//    if(estadoSensor()){
+        console.log('Inicia el motor');
+        gpio.write(8, 5000);
+        gpio.write(10, 0);
+//    }else{
+        console.error('No se puede dispensar el dulce, el sensor parece estar obstruido')
+//    }
     
 }
 
@@ -43,6 +47,10 @@ console.log('Se inician los pines 08,10,12');
     gpio.setup(12, gpio.DIR_IN, gpio.EDGE_BOTH , lecturaPin);
     gpio.setup(08, gpio.DIR_OUT,on);
     gpio.setup(10, gpio.DIR_OUT,on);        
+    setTimeout(function() {
+        detenerMotor()
+    }, 1000);
+    ;
 }
 
 function on(){
@@ -63,9 +71,34 @@ function lecturaPin(){
     });
 }
 
-
-inicializarPins();
-setTimeout(function() {
+module.exports = {
+  initDispensador: function(){
+    inicializarPins();
+  },
+  entregarDulce: function(){
     dispensarDulce();
-}, 3000);
+  },
+  estadoSensor: function(){
+    return estadoSensor();
+  }
+}
+
+
+function estadoSensor(){
+    var estado;
+    estado = gpio.read(12, function(err, value ,estado){
+            estado = value;
+        return value;
+    });
+    setTimeout( function(){},2000);
+    return estado;
+}
+
+
+
+
+//inicializarPins();
+//setTimeout(function() {
+//    dispensarDulce();
+//}, 3000);
 console.log('Ok.');
