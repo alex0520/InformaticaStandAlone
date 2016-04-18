@@ -1,5 +1,6 @@
 var amqp = require('amqp');
 var dispensador = require('./dispensarDulce');
+var musica = require('./play');
 
 var connection = amqp.createConnection({
     host: '52.37.50.140'
@@ -37,6 +38,7 @@ function escribirCola(mensaje) {
                 console.log("Mensaje obtenido ", buffer.toString());
                 try {
                     dispensador.entregarDulce();
+                    musica.reproducirMusica();
                     escribirCola('{"id": "' + buffer.toString() + '”, "codigo": "0"}');
                 } catch (err) {
                     console.error(err.message);
