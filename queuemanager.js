@@ -10,6 +10,7 @@ var connection = amqp.createConnection({
 
 connection.on('ready', function () {
     console.log('Conexión hecha con RabbitMQ y lista para ser usada');
+    dispensador.initDispensador();
 });
 
 connection.on('error', function () {
