@@ -9,4 +9,4 @@ function reproducirMusica() {
     });
 }
 
-export.reproducirMusica = reproducirMusica;
+exports.reproducirMusica = reproducirMusica;

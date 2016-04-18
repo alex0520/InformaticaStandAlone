@@ -29,20 +29,21 @@ function escribirCola(mensaje) {
             durable: true
             , autoDelete: false
         }, function (cola) {
+            console.log('Queue ' + cola.name + ' is open');
 
             // comodin para capturar todos los mensajes
             cola.bind('#');
 
             cola.subscribe(function (message) {
-                var buffer = new Buffer(message.data);
-                console.log("Mensaje obtenido ", buffer.toString());
+                console.log('dato:[' + message + ']');
+                console.log("Mensaje obtenido ", message);
                 try {
                     dispensador.entregarDulce();
                     musica.reproducirMusica();
-                    escribirCola('{"id": "' + buffer.toString() + '”, "codigo": "0"}');
+                    escribirCola('{"id": "' + message + '”, "codigo": "0"}');
                 } catch (err) {
                     console.error(err.message);
-                    escribirCola('{"id": "' + buffer.toString() + '”, "codigo": "1"}');
+                    escribirCola('{"id": "' + message + '”, "codigo": "1"}');
                 }
             });
         });
