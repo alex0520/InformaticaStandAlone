@@ -33,17 +33,15 @@ function escribirCola(mensaje) {
 
             // comodin para capturar todos los mensajes
             cola.bind('#');
-
             cola.subscribe(function (message) {
                 console.log('dato:[' + message + ']');
-                console.log("Mensaje obtenido ", message);
                 try {
                     dispensador.entregarDulce();
                     musica.reproducirMusica();
-                    escribirCola('{"id": "' + message + '”, "codigo": "0"}');
+                    escribirCola('{"id": "' + message + '", "codigo": "0"}');
                 } catch (err) {
                     console.error(err.message);
-                    escribirCola('{"id": "' + message + '”, "codigo": "1"}');
+                    escribirCola('{"id": "' + message + '", "codigo": "1"}');
                 }
             });
         });
