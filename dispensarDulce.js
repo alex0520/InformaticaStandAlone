@@ -1,26 +1,36 @@
 var gpio = require('rpi-gpio');
+var musica = require('./play');
 
 ultimoEstado=false;
 motorIniciado=false;
+pasoDulce=false;
 
 
 function dispensarDulce(){
+    pasoDulce=false;
     iniciarMotor();
-    motorIniciado =true; 
+    motorIniciado =true;     
+    setTimeout(function () {
+        if(!pasoDulce){
+            detenerMotor();
+            motorIniciado = false;
+            console.log("No hay dulce");          
+        }
+    }, 1800);
 }
 
 gpio.on('change', function(channel, value) {
-    if(ultimoEstado!=value){        
-        //Al cambio de estado del sensor se detiene el motor, si esta iniciado
-        console.log('cambio el sensor');
+    console.log('value: ' + value);
+    if(value == false){        
+        //Al cambio de estado del sensor se detiene el motor, si esta iniciado        
         if(motorIniciado){
             console.log('paso el dulce');
+            pasoDulce=true;
+            musica.reproducirMusica();
             detenerMotor();
-            motorIniciado=false;
-        }        
-        ultimoEstado=value;
+            motorIniciado = false;
+        }
     }
-
 });
 
 
