@@ -26,7 +26,7 @@ gpio.on('change', function (channel, value) {
 function iniciarMotor() {
     //    if(estadoSensor()){
     console.log('Inicia el motor');
-    gpio.write(8, 500000);
+    gpio.write(16, 500000);
     gpio.write(10, 0);
     //    }else{
     //        console.error('No se puede dispensar el dulce, el sensor parece estar obstruido')
@@ -36,14 +36,14 @@ function iniciarMotor() {
 
 function detenerMotor() {
     console.log('Detiene el motor');
-    gpio.write(8, 0);
+    gpio.write(16, 0);
     gpio.write(10, 0);
 }
 
 function inicializarPins() {
     console.log('Se inician los pines 08,10,12');
     gpio.setup(12, gpio.DIR_IN, gpio.EDGE_BOTH, lecturaPin);
-    gpio.setup(08, gpio.DIR_OUT, on);
+    gpio.setup(16, gpio.DIR_OUT, on);
     gpio.setup(10, gpio.DIR_OUT, on);
     setTimeout(function () {
         detenerMotor()
@@ -88,7 +88,7 @@ module.exports = {
                 qmanager.escribirCola('{"id": "' + idProcess + '", "codigo": "0"}');
             }
             success();
-        }, 2500);
+        }, 3500);
     }
     , estadoSensor: function () {
         return estadoSensor();
