@@ -38,17 +38,17 @@ function escribirCola(mensaje) {
             }, function (message, headers, deliveryInfo, ack) {
                 console.log('dato:[' + message + ']');
                 try {
-                    dispensador.entregarDulce();
-                    //musica.reproducirMusica();
-                    escribirCola('{"id": "' + message + '", "codigo": "0"}');                    
-                    console.log("resultado="+dulce);                    
-                    ack.acknowledge();
+                    dispensador.entregarDulce(message, function () {
+                        ack.acknowledge();
+                    });
                 } catch (err) {
+                    escribirCola('{"id": "' + idProcess + '", "codigo": "2"}');
                     console.error(err.message);
-                    escribirCola('{"id": "' + message + '", "codigo": "1"}');
                     ack.acknowledge();
                 }
             });
         });
     }, 1000);
 })(connection);
+
+exports.escribirCola = escribirCola;
