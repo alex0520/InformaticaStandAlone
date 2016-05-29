@@ -47,7 +47,7 @@ case "$1" in
            echo cantidad de procesos en ejecucion $cant_procesos | tee -a $pathLog
            if [ "$cant_procesos" = "1" ]
            then
-              node $pathQueueManager/queuemanager.js >> $pathLog & 
+              node $pathQueueManager/queuemanager.js >> $pathLog  2>> $pathLog & 
            else
               echo | tee -a $pathLog
               echo | tee -a $pathLog

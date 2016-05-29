@@ -1,4 +1,6 @@
 var gpio=require("pi-gpio");
+var log4c = require('./log4Candy');
+
 stopMotors = false;
 function sleep(milliseconds) {
   var start = new Date().getTime();

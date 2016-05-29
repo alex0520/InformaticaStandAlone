@@ -1,5 +1,6 @@
 var amqp = require('amqp');
 var dispensador = require('./dispensarDulce');
+var log4c = require('./log4Candy');
 //var musica = require('./play');
 
 var connection = amqp.createConnection({
@@ -10,7 +11,7 @@ var connection = amqp.createConnection({
 });
 
 connection.on('ready', function () {
-    console.log('Conexión hecha con RabbitMQ y lista para ser usada');
+    log4c.log('Conexión hecha con RabbitMQ y lista para ser usada');
     dispensador.initDispensador();
 });
 
@@ -29,19 +30,21 @@ function escribirCola(mensaje) {
             durable: true
             , autoDelete: false
         }, function (cola) {
-            console.log('Queue ' + cola.name + ' is open');
+            log4c.log('Queue ' + cola.name + ' is open');
 
             // comodin para capturar todos los mensajes
             cola.bind('#');
             cola.subscribe({
                 ack: true
             }, function (message, headers, deliveryInfo, ack) {
-                console.log('dato:[' + message + ']');
+                log4c.log("------------------------ Se Recibe mensaje de la cola ------------------------");
+                log4c.log('\t dato:[' + message + ']');
                 try {
                     dispensador.entregarDulce(message, function () {
                         ack.acknowledge();
                     });
                 } catch (err) {
+                    log4c.log('\t !ERROR DESPACHANDO : se escribe en la cola \t dato:[' + message + ']');
                     escribirCola('{"id": "' + idProcess + '", "codigo": "2"}');
                     console.error(err.message);
                     ack.acknowledge();
