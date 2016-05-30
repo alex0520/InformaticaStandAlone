@@ -17,6 +17,7 @@ function start(){
       if (err.message !== "Connection closing") {
         console.error("[AMQP] conn error", err.message);
       }
+      conn.close();
     });
     conn.on("close", function() {
       console.error("[AMQP] reconnecting");
@@ -64,6 +65,15 @@ function whenConnected(){
                 log4c.log("ack enviado");
             }
         });
+    });
+    queue.on("error", function(err) {
+        console.error("[AMQP] queue error", err.message);
+        queue.close();
+    });
+    queue.on("close", function() {
+      queue.destroy();
+      conn.close();
+      return setTimeout(start, 5000);
     });
 }
 
