@@ -12,6 +12,7 @@ function start(){
     , port: 5672
     , login: 'alozano'
     , password: 'alex506071006'
+    , heartbeat : 30
 },{reconnect: false});
      conn.on("error", function(err) {
       if (err.message !== "Connection closing") {
